@@ -1,0 +1,5 @@
+.tabuleiro{
+    margin: 40vh 0px 0px 40vw;
+    display: grid;
+    grid-template-columns: 50px 50px 50px;
+}
