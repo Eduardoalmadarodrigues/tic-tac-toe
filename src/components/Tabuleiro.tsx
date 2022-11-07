@@ -7,17 +7,21 @@ type square = string[];
 export default function Tabuleiro() {
   const [square, setSquare] = useState(["", "", "", "", "", "", "", "", ""]);
   const [turn, setTurn] = useState(true);
+  const [turnHistoric, setTurnHistoric] = useState([]);
 
   function handleClickSquare(chave: number) {    
     const tempSquare = [...square];
+    const tempTurnHistoric = [...turnHistoric];
     if(tempSquare[chave]===""){
     setTurn(!turn);
     (turn === false) ? tempSquare[chave] = "X" : tempSquare[chave] = "O"; 
 }   
+    tempTurnHistoric.push(tempSquare as never);
+    setTurnHistoric(tempTurnHistoric);
     setSquare(tempSquare);
   }
 
-  useEffect( () => console.log(square))
+  useEffect( () =>console.log(turnHistoric))
 
   return (
     <div>
@@ -30,7 +34,11 @@ export default function Tabuleiro() {
           state={square}
         />
       ))}
-
+    </div>
+    <div>
+      {turnHistoric.map((turn)=>(
+        <p>{turn}</p>
+      ))}
     </div>
     </div>
   );
