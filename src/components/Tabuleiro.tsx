@@ -24,7 +24,6 @@ export default function Tabuleiro() {
   const [square, setSquare] = useState(["", "", "", "", "", "", "", "", ""]);
   const [turn, setTurn] = useState(true);
   const [turnHistoric, setTurnHistoric] = useState([]);
-  const [win , setWin] = useState(false);
   const [score , setScore] = useState({player1: 0, player2: 0 , draw:0});
 
   function handleReset(){
@@ -38,17 +37,15 @@ export default function Tabuleiro() {
   }
 
   function handleClickSquare(chave: number) { 
-    if(!win){
       const tempSquare = [...square];
       const tempTurnHistoric = [...turnHistoric];
       if(tempSquare[chave]===""){
       setTurn(!turn);
       (turn === false) ? tempSquare[chave] = "X" : tempSquare[chave] = "O"; 
-  }   
       tempTurnHistoric.push(tempSquare as never);
       setTurnHistoric(tempTurnHistoric);
-      setSquare(tempSquare);
-    }   
+      setSquare(tempSquare); 
+  }   
   }
 
   useEffect( () =>{
@@ -57,10 +54,26 @@ export default function Tabuleiro() {
         if(square[value[0]]===square[value[1]] && square[value[1]]===square[value[2]]){
           window.alert(turn === false ? "player 1 venceu!" : "player 2 venceu!");
           if(turn == false){
-            setScore(score.player1++ as any);
+            const tempScore = {...score};
+            tempScore.player1++;
+            setScore({...tempScore});
+          }else{
+            const tempScore = {...score};
+            tempScore.player2++;
+            setScore({...tempScore});
           }
-          setWin(true);
+          setSquare(["", "", "", "", "", "", "", "", ""]);
+          setTurnHistoric([]);
+          setTurn(true);
         }
+      }
+      if(!square.includes("")){
+        const tempScore = {...score};
+        tempScore.draw++;
+        setScore({...tempScore});
+        setSquare(["", "", "", "", "", "", "", "", ""]);
+        setTurnHistoric([]);
+        setTurn(true);
       }
     });
 },[square])
