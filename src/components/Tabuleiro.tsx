@@ -3,6 +3,11 @@ import Square from "./Square";
 import styles from "./Tabuleiro.module.css";
 
 type square = string[];
+type Score = {
+  player1: number;
+  player2: number;
+  draw: number;
+}
 
 const conditions =[
   [0, 1, 2],
@@ -20,6 +25,7 @@ export default function Tabuleiro() {
   const [turn, setTurn] = useState(true);
   const [turnHistoric, setTurnHistoric] = useState([]);
   const [win , setWin] = useState(false);
+  const [score , setScore] = useState({player1: 0, player2: 0 , draw:0});
 
   function handleReset(){
     setSquare(["", "", "", "", "", "", "", "", ""]);
@@ -50,6 +56,9 @@ export default function Tabuleiro() {
       if(square[value[0]]!=="" && square[value[0]] !== "" && square[value[0]]!==""){
         if(square[value[0]]===square[value[1]] && square[value[1]]===square[value[2]]){
           window.alert(turn === false ? "player 1 venceu!" : "player 2 venceu!");
+          if(turn == false){
+            setScore(score.player1++ as any);
+          }
           setWin(true);
         }
       }
@@ -58,6 +67,9 @@ export default function Tabuleiro() {
 
   return (
     <div>
+      <h1>player 1: {score.player1}</h1>
+      <h1>player 2: {score.player2}</h1>
+      <h1>Empate: {score.draw}</h1>
       <button onClick={()=> handleReset()}>reset</button>
     <div>{turn === true ? <h1>Vez de player 1.</h1> : <h1>Vez de player 2</h1>}</div>
     <div className={styles.tabuleiro}>
